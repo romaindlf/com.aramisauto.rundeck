@@ -1,0 +1,25 @@
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://constructions-incongrues.github.com/packages"
+        }
+    ],
+    "bin": ["bin/aramisauto-rundeck"],
+    "require": {
+        "knplabs/github-api": "*",
+        "silex/silex": "1.*",
+        "symfony/console": "2.*",
+        "symfony/filesystem": "2.*",
+        "symfony/stopwatch": "2.*",
+        "vierbergenlars/php-semver": "dev-master"
+    },
+    "require-dev": {
+        "constructions-incongrues/ananas-build-toolkit": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "AramisAuto": "src/src/"
+        }
+    }
+}

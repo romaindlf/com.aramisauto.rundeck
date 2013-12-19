@@ -1,0 +1,9 @@
+{
+    "directories": ["src", "vendor/composer", "vendor/symfony"],
+    "files": ["vendor/autoload.php"],
+    "main": "bin/rundeck-helper",
+    "output": "rundeck-helper.phar",
+    "chmod": "0755",
+    "stub": true,
+    "git-tag": "@version@"
+}
