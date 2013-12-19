@@ -1,3 +1,5 @@
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ARAMISAUTO/com.aramisauto.rundeck/badges/quality-score.png?s=c552c643de94d20e8b23e28c8f9082f1622e9b5a)](https://scrutinizer-ci.com/g/ARAMISAUTO/com.aramisauto.rundeck/)
+
 #Installation
 
 You just have to download ```rundeck-helper.phar``` from latest release : https://github.com/ARAMISAUTO/com.aramisauto.rundeck/releases and execute it.
