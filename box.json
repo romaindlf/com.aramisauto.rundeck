@@ -1,9 +1,8 @@
 {
-    "directories": ["src", "vendor/composer", "vendor/symfony"],
-    "files": ["vendor/autoload.php"],
-    "main": "bin/rundeck-helper",
-    "output": "rundeck-helper.phar",
-    "chmod": "0755",
-    "stub": true,
-    "git-tag": "@version@"
+    "chmod":       "0755",
+    "directories": ["src/src/AramisAuto/Rundeck/Cli", "vendor/composer", "vendor/symfony/stopwatch", "vendor/symfony/console"],
+    "files":       ["bin/rundeck-helper", "vendor/autoload.php"],
+    "main":        "bin/rundeck-helper",
+    "output":      "rundeck-helper.phar",
+    "stub":        true
 }

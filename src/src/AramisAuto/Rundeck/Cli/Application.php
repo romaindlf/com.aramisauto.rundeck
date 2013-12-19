@@ -7,7 +7,7 @@ class Application extends \Symfony\Component\Console\Application
 {
     public function __construct()
     {
-        parent::__construct('rundeck-helper', '@version@');
+        parent::__construct('rundeck-helper', '0.1.0');
     }
 
     protected function getDefaultCommands()

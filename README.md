@@ -1,4 +1,6 @@
-# Purge
+# Command : purge
+
+This command deletes old Rundeck execution logs in database and filesystem.
 
 ```
 Usage:
@@ -8,7 +10,7 @@ Arguments:
  keep                  Number of log days to keep from now
 
 Options:
- --rundeck-config      Path to Rundeck's rundeck-config.properties file (default: "/var/lib/rundeck/server/config/rundeck-config.properties")
+ --rundeck-config      Path to Rundeck's rundeck-config.properties file (default: "/etc/rundeck/rundeck-config.properties")
  --progress            Display progress bar
  --dry-run             Do not perform purge, just show what would be purged
  --help (-h)           Display this help message.
