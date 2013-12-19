@@ -19,9 +19,19 @@ class PurgeCommand extends Command
             ->setName('purge')
             ->setDescription('Deletes old Rundeck execution logs in database and filesystem')
             ->addArgument('keep', InputArgument::REQUIRED, 'Number of log days to keep from now')
-            ->addOption('rundeck-config', null, InputOption::VALUE_REQUIRED, "Path to Rundeck's rundeck-config.properties file", '/etc/rundeck/rundeck-config.properties')
+            ->addOption(
+                'rundeck-config',
+                null,
+                InputOption::VALUE_REQUIRED,
+                "Path to Rundeck's rundeck-config.properties file", '/etc/rundeck/rundeck-config.properties'
+            )
             ->addOption('progress', null, InputOption::VALUE_NONE, 'Display progress bar')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Do not perform purge, just show what would be purged')
+            ->addOption(
+                'dry-run',
+                null,
+                InputOption::VALUE_NONE,
+                'Do not perform purge, just show what would be purged'
+            )
         ;
     }
 
@@ -29,14 +39,21 @@ class PurgeCommand extends Command
     {
         // Sanity check
         if (!is_readable($input->getOption('rundeck-config'))) {
-            throw new \RuntimeException(sprintf('Rundeck properties files is not readable - {path: "%s"}', $input->getOption('rundeck-config')));
+            throw new \RuntimeException(
+                sprintf('Rundeck properties files is not readable - {path: "%s"}', $input->getOption('rundeck-config'))
+            );
         }
 
-        //
+        // Guess database driver
         $contentsRundeckConfig = file_get_contents($input->getOption('rundeck-config'));
         preg_match('/dataSource.url ?= ?jdbc:(\w+):.*/', $contentsRundeckConfig, $matches);
         if (!count($matches)) {
-            throw new \RuntimeException(sprintf('Configuration does not have a dataSource.url - {path: "%s"}', $input->getOption('rundeck-config')));
+            throw new \RuntimeException(
+                sprintf(
+                    'Configuration does not have a dataSource.url - {path: "%s"}',
+                    $input->getOption('rundeck-config')
+                )
+            );
         }
 
         // Call appropriate purge implementation
@@ -54,14 +71,23 @@ class PurgeCommand extends Command
         $matches = array();
         preg_match('/dataSource.url ?= ?jdbc:(\w+):.*/', $contentsRundeckConfig, $matches);
         if (!count($matches)) {
-            throw new \RuntimeException(sprintf('Configuration does not have a dataSource.url - {path: "%s"}', $input->getOption('rundeck-config')));
+            throw new \RuntimeException(
+                sprintf(
+                    'Configuration does not have a dataSource.url - {path: "%s"}',
+                    $input->getOption('rundeck-config')
+                )
+            );
         } elseif ($matches[1] !== 'mysql') {
             throw new \RuntimeException(sprintf('Unsupported database - {database: "%s"}', $matches[1]));
         } else {
             // Hostname and database
             preg_match('|jdbc:mysql://(\w+)/(\w+).*|', $contentsRundeckConfig, $matches);
             if (!count($matches)) {
-                throw new \RuntimeException(sprintf('Impossible to parse DSN - {path: "%s"}', $input->getOption('rundeck-config')));
+                throw new \RuntimeException(
+                    sprintf(
+                        'Impossible to parse DSN - {path: "%s"}', $input->getOption('rundeck-config')
+                    )
+                );
             }
             $connectionInformations['hostname'] = $matches[1];
             $connectionInformations['database'] = $matches[2];
@@ -117,7 +143,13 @@ class PurgeCommand extends Command
             $res = $stmt->fetch(\PDO::FETCH_ASSOC);
             if (!$res['indexExists']) {
                 $pdo->exec(sprintf($sqlIndexCreate, $index[0], $index[1]));
-                $output->writeln(sprintf('<info>Created index</info> - {table: "%s", index: "%s"}', $index[0], $index[1]));
+                $output->writeln(
+                    sprintf(
+                        '<info>Created index</info> - {table: "%s", index: "%s"}',
+                        $index[0],
+                        $index[1]
+                    )
+                );
             }
         }
 
@@ -151,7 +183,12 @@ EOT;
         }
 
         // Log
-        $output->writeln(sprintf('<info>Identified execution logs to be purged</info> - {count: %d}', $stmt->rowCount()));
+        $output->writeln(
+            sprintf(
+                '<info>Identified execution logs to be purged</info> - {count: %d}',
+                $stmt->rowCount()
+            )
+        );
 
         // Progress bar
         if ($input->getOption('progress') && $stmt->rowCount() > 0) {
@@ -162,13 +199,6 @@ EOT;
 
         // Delete data
         $fs = new Filesystem();
-        $sqlDeleteTpl = <<<EOT
-DELETE FROM base_report            WHERE id = :br_id;
-DELETE FROM execution              WHERE id = :ex_id;
-DELETE FROM workflow               WHERE id = :ex_wfid;
-DELETE FROM workflow_workflow_step WHERE workflow_commands_id = :ex_wfid;
-DELETE FROM workflow_step          WHERE id IN (%s);
-EOT;
         while ($res = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             if (!$input->getOption('dry-run')) {
                 // Delete database entries
@@ -214,6 +244,12 @@ EOT;
         $timer = $stopwatch->stop('purge');
 
         // Log
-        $output->writeln(sprintf('<info>Purge complete</info> - {duration: %d, dryrun: %d}', $timer->getDuration(), $input->getOption('dry-run')));
+        $output->writeln(
+            sprintf(
+                '<info>Purge complete</info> - {duration: %d, dryrun: %d}',
+                $timer->getDuration(),
+                $input->getOption('dry-run')
+            )
+        );
     }
 }
