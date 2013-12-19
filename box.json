@@ -1,6 +1,12 @@
 {
     "chmod":       "0755",
-    "directories": ["src/src/AramisAuto/Rundeck/Cli", "vendor/composer", "vendor/symfony/stopwatch", "vendor/symfony/console"],
+    "directories": [
+        "src/src/AramisAuto/Rundeck/Cli",
+        "vendor/composer",
+        "vendor/symfony/console",
+        "vendor/symfony/filesystem",
+        "vendor/symfony/stopwatch"
+    ],
     "files":       ["bin/rundeck-helper", "vendor/autoload.php"],
     "main":        "bin/rundeck-helper",
     "output":      "rundeck-helper.phar",
