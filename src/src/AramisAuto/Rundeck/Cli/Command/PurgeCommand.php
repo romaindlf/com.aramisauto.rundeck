@@ -19,7 +19,7 @@ class PurgeCommand extends Command
             ->setName('purge')
             ->setDescription('Deletes old Rundeck execution logs in database and filesystem')
             ->addArgument('keep', InputArgument::REQUIRED, 'Number of log days to keep from now')
-            ->addOption('rundeck-config', null, InputOption::VALUE_REQUIRED, "Path to Rundeck's rundeck-config.properties file", '/var/lib/rundeck/server/config/rundeck-config.properties')
+            ->addOption('rundeck-config', null, InputOption::VALUE_REQUIRED, "Path to Rundeck's rundeck-config.properties file", '/etc/rundeck/rundeck-config.properties')
             ->addOption('progress', null, InputOption::VALUE_NONE, 'Display progress bar')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Do not perform purge, just show what would be purged')
         ;
