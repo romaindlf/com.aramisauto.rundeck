@@ -1,6 +1,6 @@
 #Installation
 
-You just have to download rundeck-helper.phar from latest release : https://github.com/ARAMISAUTO/com.aramisauto.rundeck/releases and execute it.
+You just have to download ```rundeck-helper.phar``` from latest release : https://github.com/ARAMISAUTO/com.aramisauto.rundeck/releases and execute it.
 
 #Available commands
 
