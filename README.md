@@ -1,6 +1,12 @@
-# Command : purge
+#Installation
 
-This command deletes old Rundeck execution logs in database and filesystem.
+You just have to download rundeck-helper.phar from latest release : https://github.com/ARAMISAUTO/com.aramisauto.rundeck/releases and execute it.
+
+#Available commands
+
+##purge
+
+This command deletes old Rundeck execution logs in database and filesystem. It is a workaround for the Rundeck issue : https://github.com/dtolabs/rundeck/issues/357
 
 ```
 Usage:
