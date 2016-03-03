@@ -162,14 +162,11 @@ SELECT
     b.workflow_id "ex_wfid",
     group_concat(c.workflow_step_id) "ws_stepids"
 FROM
-    base_report a,
-    execution b,
-    workflow_workflow_step c
+    base_report a 
+LEFT JOIN execution b ON a.JC_EXEC_ID = b.ID
+LEFT JOIN workflow_workflow_step c on b.workflow_id = c.workflow_commands_id
 WHERE
     datediff(now(), a.date_completed) > :keep
-    and
-    a.JC_EXEC_ID = b.ID
-    and b.workflow_id = c.workflow_commands_id
 group by
     a.id,
     b.id,
