@@ -205,10 +205,6 @@ EOT;
                 $pdo->exec("DELETE FROM workflow_step WHERE id = " . $res['ex_wfid']);
                 $pdo->exec("DELETE FROM workflow_workflow_step WHERE id = ".$res['ex_wfid']);
                 $pdo->exec(sprintf("DELETE FROM workflow_step WHERE id = IN(%s)", $res['ws_stepids']));
-            
-                $pdo->exec("DELETE FROM workflow WHERE id NOT in (SELECT id FROM execution) AND id NOT IN (SELECT distinct workflow_id FROM scheduled_execution) AND id NOT IN (SELECT DISTINCT workflow_id FROM execution)");
-                $pdo->exec("DELETE FROM workflow_step WHERE id NOT IN (SELECT workflow_step_id FROM workflow_workflow_step)");
-
                 // Remove log from filesystem
                 $fs->remove($res['ex_logpfad']);
             }
@@ -235,6 +231,10 @@ EOT;
                 $progressGlobal->advance();
             }
         }
+            
+        $pdo->exec("DELETE FROM workflow WHERE id NOT in (SELECT id FROM execution) AND id NOT IN (SELECT distinct workflow_id FROM scheduled_execution) AND id NOT IN (SELECT DISTINCT workflow_id FROM execution)");
+        $pdo->exec("DELETE FROM workflow_step WHERE id NOT IN (SELECT workflow_step_id FROM workflow_workflow_step)");
+
 
         // Close progress bar
         if ($input->getOption('progress')) {
