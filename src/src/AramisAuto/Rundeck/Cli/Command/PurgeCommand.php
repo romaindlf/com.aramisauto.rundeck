@@ -162,14 +162,11 @@ SELECT
     b.workflow_id "ex_wfid",
     group_concat(c.workflow_step_id) "ws_stepids"
 FROM
-    base_report a,
-    execution b,
-    workflow_workflow_step c
+    base_report a 
+LEFT JOIN execution b ON a.JC_EXEC_ID = b.ID
+LEFT JOIN workflow_workflow_step c on b.workflow_id = c.workflow_commands_id
 WHERE
     datediff(now(), a.date_completed) > :keep
-    and
-    a.JC_EXEC_ID = b.ID
-    and b.workflow_id = c.workflow_commands_id
 group by
     a.id,
     b.id,
@@ -205,8 +202,12 @@ EOT;
                 $pdo->exec("DELETE FROM base_report WHERE id = ".$res['br_id']);
                 $pdo->exec("DELETE FROM execution WHERE id = ".$res['ex_id']);
                 $pdo->exec("DELETE FROM workflow WHERE id = ".$res['ex_wfid']);
+                $pdo->exec("DELETE FROM workflow_step WHERE id = " . $res['ex_wfid']);
                 $pdo->exec("DELETE FROM workflow_workflow_step WHERE id = ".$res['ex_wfid']);
                 $pdo->exec(sprintf("DELETE FROM workflow_step WHERE id = IN(%s)", $res['ws_stepids']));
+            
+                $pdo->exec("DELETE FROM workflow WHERE id NOT in (SELECT id FROM execution) AND id NOT IN (SELECT distinct workflow_id FROM scheduled_execution) AND id NOT IN (SELECT DISTINCT workflow_id FROM execution)");
+                $pdo->exec("DELETE FROM workflow_step WHERE id NOT IN (SELECT workflow_step_id FROM workflow_workflow_step)");
 
                 // Remove log from filesystem
                 $fs->remove($res['ex_logpfad']);
